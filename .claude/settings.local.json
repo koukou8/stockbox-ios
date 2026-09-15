@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo \"exit: $?\")",
+      "Bash(echo \"forbidden-grep-exit: $?\")",
+      "Bash(echo \"check-exit: $?\")",
+      "Bash(echo \"final-check-exit: $?\")"
+    ]
+  }
+}

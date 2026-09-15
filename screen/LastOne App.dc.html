@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#F7F2EB; font-family:'Zen Maru Gothic','Quicksand',system-ui,sans-serif; color:#4A4038; }
+  a { color:#7FA588; } a:hover { color:#5E7F62; }
+  * { text-wrap: pretty; }
+  @keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes floatSoft { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+</style>
+</helmet>
+<div style="min-height:100vh;box-sizing:border-box;padding:56px 48px 72px;display:flex;flex-direction:column;align-items:center;gap:36px;background:radial-gradient(1100px 600px at 50% -8%, #FDF9F3 0%, #F4EDE4 60%, #F0E8DE 100%)">
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:14px;max-width:760px;text-align:center">
+    <div style="font:600 12px/1 'Quicksand',sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#B3A697">LastOne · iOS MVP · interactive</div>
+    <h1 style="margin:0;font:700 40px/1.25 'Zen Maru Gothic',sans-serif;color:#413830">残り1つを、ふわっと記録するアプリ</h1>
+    <p style="margin:0;font:400 15px/1.9 'Zen Maru Gothic',sans-serif;color:#8C8073;max-width:640px">仕様書のコアループ（残りわずか → 買うものリスト → 買った）をそのまま触れるプロトタイプ。基準言語の英語 UI にも切り替えて、文字幅の伸びを検証できます。</p>
+    <div style="margin-top:6px;display:flex;gap:6px;padding:5px;border-radius:999px;background:#fff;box-shadow:0 6px 18px rgba(150,124,96,.10)">
+      <div onClick="{{ setJa }}" style="padding:9px 20px;border-radius:999px;font:500 12.5px/1 'Zen Maru Gothic',sans-serif;cursor:pointer;user-select:none;background:{{ jaBg }};color:{{ jaFg }}">日本語</div>
+      <div onClick="{{ setEn }}" style="padding:9px 20px;border-radius:999px;font:600 12.5px/1 'Quicksand',sans-serif;cursor:pointer;user-select:none;background:{{ enBg }};color:{{ enFg }}">English</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:48px;align-items:flex-start;flex-wrap:wrap;justify-content:center">
+
+    <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+      <div style="height:100%;display:flex;flex-direction:column;position:relative;background:#FAF5EE;overflow:hidden">
+
+        <div style="padding:64px 22px 14px;display:flex;flex-direction:column;gap:4px;background:linear-gradient(#FDFAF5,#FAF5EE)">
+          <div style="font:500 12px/1 'Quicksand',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#C0B4A5">{{ screenKicker }}</div>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+            <div style="font:700 27px/1.3 'Zen Maru Gothic',sans-serif;color:#413830">{{ screenTitle }}</div>
+            <div style="font:400 12px/1.6 'Zen Maru Gothic',sans-serif;color:#A79C91;padding-bottom:5px">{{ screenMeta }}</div>
+          </div>
+        </div>
+
+        <div style="flex:1;overflow:auto;padding:8px 18px 22px;display:flex;flex-direction:column;gap:14px">
+
+          <sc-if value="{{ isBuy }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <sc-for list="{{ buyList }}" as="it" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:22px;padding:16px 16px 16px 18px;box-shadow:0 8px 22px rgba(150,124,96,.09);border:1px solid rgba(196,113,60,.10)">
+                  <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
+                    <div style="font:500 16px/1.35 'Zen Maru Gothic',sans-serif;color:#413830">{{ it.name }}</div>
+                    <div style="display:flex;align-items:center;gap:8px;font:400 11.5px/1 'Zen Maru Gothic',sans-serif;color:#B0A496">
+                      <span style="padding:4px 9px;border-radius:999px;background:#F4EEE5;color:#9A8D7E">{{ it.cat }}</span>
+                      <span>{{ it.lastLabel }}</span>
+                    </div>
+                  </div>
+                  <div onClick="{{ it.onBought }}" style="flex:none;padding:11px 17px;border-radius:999px;background:#8FB89E;color:#fff;font:500 13.5px/1 'Zen Maru Gothic',sans-serif;box-shadow:0 6px 14px rgba(143,184,158,.4);cursor:pointer;user-select:none;white-space:nowrap" style-hover="background:#7FA588;transform:translateY(-1px)" style-active="transform:translateY(1px)">{{ L.bought }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ buyEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:16px;padding:34px 24px 38px;border-radius:30px;background:linear-gradient(170deg,#FDFAF5,#F8F2E9);border:1.5px solid #F0E7DA">
+                <div style="position:relative;width:150px;height:112px;animation:floatSoft 5.5s ease-in-out infinite">
+                  <div style="position:absolute;left:14px;top:52px;width:122px;height:52px;border-radius:0 0 26px 26px / 0 0 40px 40px;background:#EDF3EC;border:2px solid #D8E6D8;border-top:none"></div>
+                  <div style="position:absolute;left:6px;top:44px;width:138px;height:16px;border-radius:999px;background:#E2EEE2;border:2px solid #D2E2D2;box-sizing:border-box"></div>
+                  <div style="position:absolute;left:48px;top:14px;width:54px;height:44px;border-radius:28px 28px 0 0;border:2px solid #D2E2D2;border-bottom:none;box-sizing:border-box"></div>
+                  <div style="position:absolute;left:26px;top:12px;width:16px;height:16px;border-radius:999px;background:#FCEADC"></div>
+                  <div style="position:absolute;left:110px;top:24px;width:11px;height:11px;border-radius:999px;background:#F6E8CE"></div>
+                  <div style="position:absolute;left:96px;top:4px;width:7px;height:7px;border-radius:999px;background:#E7DCCC"></div>
+                </div>
+                <div style="font:500 16px/1.5 'Zen Maru Gothic',sans-serif;color:#6E6357">{{ L.emptyTitle }}</div>
+                <div style="font:400 12.5px/1.85 'Zen Maru Gothic',sans-serif;color:#A79C91;text-align:center;max-width:230px">{{ L.emptyBody }}</div>
+                <div onClick="{{ goStocks }}" style="margin-top:2px;padding:11px 20px;border-radius:999px;background:#fff;border:1px solid #E7DCCC;font:500 12.5px/1 'Zen Maru Gothic',sans-serif;color:#8A7D6E;cursor:pointer;user-select:none" style-hover="border-color:#C9B79E;color:#5E5449">{{ L.emptyCta }}</div>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ isStocks }}" hint-placeholder-val="{{ false }}">
+            <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:8px">
+                <div style="display:flex;align-items:center;gap:8px;padding:0 4px">
+                  <div style="font:500 13px/1 'Zen Maru Gothic',sans-serif;color:#9A8D7E">{{ g.name }}</div>
+                  <div style="font:600 11px/1 'Quicksand',sans-serif;color:#C4B8A8">{{ g.countLabel }}</div>
+                  <div style="flex:1;height:1px;background:linear-gradient(90deg,#E7DCCC,rgba(231,220,204,0))"></div>
+                </div>
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                  <div style="background:#fff;border-radius:22px;padding:15px 16px;box-shadow:0 8px 22px rgba(150,124,96,.08);display:flex;flex-direction:column;gap:12px">
+                    <div style="display:flex;align-items:flex-start;gap:10px">
+                      <div style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
+                        <div style="font:500 16px/1.35 'Zen Maru Gothic',sans-serif;color:#413830">{{ it.name }}</div>
+                        <div style="font:400 11.5px/1 'Zen Maru Gothic',sans-serif;color:#B0A496">{{ it.lastLabel }}</div>
+                      </div>
+                      <sc-if value="{{ it.isLow }}" hint-placeholder-val="{{ false }}">
+                        <div style="flex:none;padding:6px 11px;border-radius:999px;background:#FCEADC;color:#C4713C;font:500 11.5px/1 'Zen Maru Gothic',sans-serif;white-space:nowrap">{{ L.low }}</div>
+                      </sc-if>
+                      <sc-if value="{{ it.inStock }}" hint-placeholder-val="{{ true }}">
+                        <div style="flex:none;padding:6px 11px;border-radius:999px;background:#EAF2E9;color:#688B6D;font:500 11.5px/1 'Zen Maru Gothic',sans-serif;white-space:nowrap">{{ L.inStock }}</div>
+                      </sc-if>
+                    </div>
+                    <sc-if value="{{ it.isBinary }}" hint-placeholder-val="{{ true }}">
+                      <div onClick="{{ it.onToggleLow }}" style="padding:11px;border-radius:16px;background:#FBF6EF;border:1px solid #EEE3D4;text-align:center;font:500 13px/1 'Zen Maru Gothic',sans-serif;color:#8A7D6E;cursor:pointer;user-select:none" style-hover="background:#F7EFE4;color:#C4713C">{{ it.binaryAction }}</div>
+                    </sc-if>
+                    <sc-if value="{{ it.isCount }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;align-items:center;gap:10px;background:#FBF6EF;border:1px solid #EEE3D4;border-radius:16px;padding:8px 10px 8px 14px">
+                        <div style="flex:1;display:flex;align-items:baseline;gap:6px">
+                          <span style="font:700 20px/1 'Quicksand',sans-serif;color:#413830">{{ it.stockCount }}</span>
+                          <span style="font:400 11.5px/1 'Zen Maru Gothic',sans-serif;color:#A79C91">{{ it.countHint }}</span>
+                        </div>
+                        <div onClick="{{ it.onOpenOne }}" style="padding:9px 14px;border-radius:999px;background:#fff;border:1px solid #E7DCCC;font:500 12.5px/1 'Zen Maru Gothic',sans-serif;color:#8A7D6E;cursor:pointer;user-select:none;white-space:nowrap" style-hover="border-color:#D9C8B0;color:#5E5449">{{ L.openOne }}</div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+            <div onClick="{{ openAdd }}" style="margin-top:2px;padding:16px;border-radius:22px;border:1.5px dashed #E0D3C0;background:rgba(255,255,255,.55);text-align:center;font:500 13.5px/1 'Zen Maru Gothic',sans-serif;color:#A2957F;cursor:pointer;user-select:none" style-hover="border-color:#C9B79E;color:#7F7364;background:#fff">{{ L.addItem }}</div>
+          </sc-if>
+
+          <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div style="border-radius:26px;padding:22px;background:linear-gradient(150deg,#FDF3E2,#F8E7CF);box-shadow:0 10px 26px rgba(196,150,90,.16);display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.75);font:600 10.5px/1 'Quicksand',sans-serif;letter-spacing:.12em;color:#B08344">PRO</div>
+                  <div style="font:500 14px/1 'Zen Maru Gothic',sans-serif;color:#8A6634">{{ proStatusLabel }}</div>
+                </div>
+                <div style="font:700 19px/1.5 'Zen Maru Gothic',sans-serif;color:#6E4F26">{{ L.proHead }}</div>
+                <div style="font:400 12.5px/1.8 'Zen Maru Gothic',sans-serif;color:#9A7A4C">{{ L.proSub }}</div>
+                <div style="display:flex;gap:10px;margin-top:2px">
+                  <div onClick="{{ openPaywall }}" style="flex:1;padding:13px;border-radius:16px;background:#C99A56;color:#fff;text-align:center;font:500 13.5px/1 'Zen Maru Gothic',sans-serif;cursor:pointer;user-select:none;box-shadow:0 8px 18px rgba(201,154,86,.35)" style-hover="background:#B98A47">{{ L.seePro }}</div>
+                  <div onClick="{{ restore }}" style="flex:none;padding:13px 16px;border-radius:16px;background:rgba(255,255,255,.7);color:#9A7A4C;font:500 13px/1 'Zen Maru Gothic',sans-serif;cursor:pointer;user-select:none;white-space:nowrap" style-hover="background:#fff">{{ L.restoreShort }}</div>
+                </div>
+              </div>
+
+              <div style="background:#fff;border-radius:24px;box-shadow:0 8px 22px rgba(150,124,96,.08);overflow:hidden">
+                <div onClick="{{ openCats }}" style="padding:17px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;border-bottom:1px solid #F4EDE3" style-hover="background:#FDFAF5">
+                  <div style="flex:1;font:500 14.5px/1 'Zen Maru Gothic',sans-serif;color:#4A4038">{{ L.manageCats }}</div>
+                  <div style="font:400 12.5px/1 'Zen Maru Gothic',sans-serif;color:#B0A496">{{ catCountLabel }}</div>
+                  <svg width="8" height="13" viewBox="0 0 8 13" fill="none" stroke="#CFC3B4" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 1.5L6.5 6.5L1.5 11.5"></path></svg>
+                </div>
+                <sc-for list="{{ settingsRows }}" as="row" hint-placeholder-count="4">
+                  <div style="padding:17px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #F4EDE3;cursor:pointer" style-hover="background:#FDFAF5">
+                    <div style="flex:1;font:500 14.5px/1 'Zen Maru Gothic',sans-serif;color:#4A4038">{{ row.label }}</div>
+                    <div style="font:400 12.5px/1 'Zen Maru Gothic',sans-serif;color:#B0A496">{{ row.value }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="padding:4px 6px;font:400 11.5px/1.9 'Zen Maru Gothic',sans-serif;color:#B5A996">{{ L.privacyNote }}</div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="flex:none;display:flex;padding:8px 14px 30px;gap:6px;background:rgba(253,250,245,.92);border-top:1px solid #F0E7DA;backdrop-filter:blur(12px)">
+          <div onClick="{{ goBuy }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 0 7px;border-radius:18px;cursor:pointer;user-select:none;background:{{ buyTabBg }}">
+            <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="{{ buyTabColor }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.4 11a2 2 0 01-2 1.8H8.4a2 2 0 01-2-1.8L5 8z"></path><path d="M9 8V6a3 3 0 016 0v2"></path></svg>
+            <span style="font:500 10.5px/1 'Zen Maru Gothic',sans-serif;color:{{ buyTabColor }}">{{ L.tabBuy }}</span>
+          </div>
+          <div onClick="{{ goStocks }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 0 7px;border-radius:18px;cursor:pointer;user-select:none;background:{{ stocksTabBg }}">
+            <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="{{ stocksTabColor }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="6.5" width="17" height="13" rx="3"></rect><path d="M3.5 11h17M9.5 6.5v4.5"></path></svg>
+            <span style="font:500 10.5px/1 'Zen Maru Gothic',sans-serif;color:{{ stocksTabColor }}">{{ L.tabStocks }}</span>
+          </div>
+          <div onClick="{{ goSettings }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 0 7px;border-radius:18px;cursor:pointer;user-select:none;background:{{ setTabBg }}">
+            <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="{{ setTabColor }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"></circle><path d="M12 4.5v2M12 17.5v2M4.5 12h2M17.5 12h2M6.9 6.9l1.4 1.4M15.7 15.7l1.4 1.4M17.1 6.9l-1.4 1.4M8.3 15.7l-1.4 1.4"></path></svg>
+            <span style="font:500 10.5px/1 'Zen Maru Gothic',sans-serif;color:{{ setTabColor }}">{{ L.tabSettings }}</span>
+          </div>
+        </div>
+
+        <sc-if value="{{ showAdd }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;z-index:70;background:rgba(65,56,48,.28);animation:fadeIn .18s ease;display:flex;flex-direction:column;justify-content:flex-end" onClick="{{ closeSheet }}">
+            <div onClick="{{ stop }}" style="background:#FAF5EE;border-radius:30px 30px 0 0;padding:14px 20px 34px;animation:sheetUp .28s cubic-bezier(.22,.9,.3,1);box-shadow:0 -14px 40px rgba(65,56,48,.18);display:flex;flex-direction:column;gap:16px">
+              <div style="align-self:center;width:44px;height:5px;border-radius:999px;background:#E4D9C9"></div>
+              <div style="font:700 20px/1.3 'Zen Maru Gothic',sans-serif;color:#413830">{{ L.addSheetTitle }}</div>
+              <input value="{{ draftName }}" onChange="{{ onDraftName }}" placeholder="{{ L.namePlaceholder }}" style="border:1px solid #EBE0D0;background:#fff;border-radius:16px;padding:14px 16px;font:400 15px/1 'Zen Maru Gothic',sans-serif;color:#413830;outline:none">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="font:500 11.5px/1 'Zen Maru Gothic',sans-serif;color:#A79C91">{{ L.category }}</div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px">
+                  <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="3">
+                    <div onClick="{{ c.onPick }}" style="padding:10px 15px;border-radius:999px;font:500 13px/1 'Zen Maru Gothic',sans-serif;cursor:pointer;user-select:none;background:{{ c.bg }};color:{{ c.fg }};border:1px solid {{ c.border }}">{{ c.name }}</div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="font:500 11.5px/1 'Zen Maru Gothic',sans-serif;color:#A79C91">{{ L.trackingMode }}</div>
+                <div style="display:flex;gap:8px">
+                  <div onClick="{{ pickBinary }}" style="flex:1;padding:13px;border-radius:18px;text-align:center;cursor:pointer;user-select:none;background:{{ binaryBg }};color:{{ binaryFg }};border:1px solid {{ binaryBorder }};font:500 13px/1.5 'Zen Maru Gothic',sans-serif">{{ L.binary }}<br><span style="font:400 10.5px/1.4 'Zen Maru Gothic',sans-serif;opacity:.7">{{ L.binaryHint }}</span></div>
+                  <div onClick="{{ pickCount }}" style="flex:1;padding:13px;border-radius:18px;text-align:center;cursor:pointer;user-select:none;background:{{ countBg }};color:{{ countFg }};border:1px solid {{ countBorder }};font:500 13px/1.5 'Zen Maru Gothic',sans-serif">{{ L.count }}<br><span style="font:400 10.5px/1.4 'Zen Maru Gothic',sans-serif;opacity:.7">{{ L.countHintShort }}</span></div>
+                </div>
+              </div>
+              <div onClick="{{ submitAdd }}" style="padding:16px;border-radius:20px;background:#8FB89E;color:#fff;text-align:center;font:500 15px/1 'Zen Maru Gothic',sans-serif;cursor:pointer;user-select:none;box-shadow:0 10px 22px rgba(143,184,158,.4)" style-hover="background:#7FA588">{{ L.addConfirm }}</div>
+              <div style="text-align:center;font:400 11.5px/1 'Zen Maru Gothic',sans-serif;color:#B5A996">{{ quotaLabel }}</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showPaywall }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;z-index:80;background:rgba(65,56,48,.32);animation:fadeIn .18s ease;display:flex;flex-direction:column;justify-content:flex-end" onClick="{{ closeSheet }}">
+            <div onClick="{{ stop }}" style="background:linear-gradient(170deg,#FDF6EA,#FAF1E3);border-radius:32px 32px 0 0;padding:16px 22px 36px;animation:sheetUp .3s cubic-bezier(.22,.9,.3,1);display:flex;flex-direction:column;gap:14px;align-items:center;box-shadow:0 -14px 40px rgba(65,56,48,.2)">
+              <div style="width:44px;height:5px;border-radius:999px;background:#E9DCC6"></div>
+              <div style="margin-top:6px;width:74px;height:74px;border-radius:999px;background:radial-gradient(circle at 32% 28%,#FBE3BC,#EFC98F);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(201,154,86,.3)">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 5.2 5.6.7-4.1 3.9 1 5.6L12 16.2 7.1 18.9l1-5.6L4 9.4l5.6-.7z"></path></svg>
+              </div>
+              <div style="font:700 22px/1.4 'Zen Maru Gothic',sans-serif;color:#6E4F26;text-align:center">LastOne Pro</div>
+              <div style="font:400 13px/1.9 'Zen Maru Gothic',sans-serif;color:#9A7A4C;text-align:center;max-width:280px">{{ paywallReason }}</div>
+              <div style="width:100%;display:flex;flex-direction:column;gap:9px;margin:4px 0 2px">
+                <sc-for list="{{ proPerks }}" as="p" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.7);border-radius:16px;padding:12px 14px">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C99A56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 7"></path></svg>
+                    <div style="font:400 13px/1.5 'Zen Maru Gothic',sans-serif;color:#7A5F35">{{ p }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div onClick="{{ buyPro }}" style="width:100%;box-sizing:border-box;padding:17px;border-radius:20px;background:#C99A56;color:#fff;text-align:center;font:500 15px/1 'Zen Maru Gothic',sans-serif;cursor:pointer;user-select:none;box-shadow:0 10px 24px rgba(201,154,86,.38)" style-hover="background:#B98A47">{{ L.priceCta }}</div>
+              <div onClick="{{ restore }}" style="font:400 12.5px/1 'Zen Maru Gothic',sans-serif;color:#A98C5F;cursor:pointer;user-select:none;padding:6px" style-hover="color:#8A6634">{{ L.restore }}</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showCats }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;z-index:75;background:rgba(65,56,48,.28);animation:fadeIn .18s ease;display:flex;flex-direction:column;justify-content:flex-end" onClick="{{ closeSheet }}">
+            <div onClick="{{ stop }}" style="background:#FAF5EE;border-radius:30px 30px 0 0;padding:14px 20px 34px;animation:sheetUp .28s cubic-bezier(.22,.9,.3,1);display:flex;flex-direction:column;gap:14px;box-shadow:0 -14px 40px rgba(65,56,48,.18)">
+              <div style="align-self:center;width:44px;height:5px;border-radius:999px;background:#E4D9C9"></div>
+              <div style="font:700 20px/1.3 'Zen Maru Gothic',sans-serif;color:#413830">{{ L.category }}</div>
+              <sc-for list="{{ catRows }}" as="c" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 6px 16px rgba(150,124,96,.07)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D6C9B6" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"></path></svg>
+                  <div style="flex:1;font:500 14.5px/1 'Zen Maru Gothic',sans-serif;color:#4A4038">{{ c.name }}</div>
+                  <div style="font:400 12px/1 'Zen Maru Gothic',sans-serif;color:#B0A496">{{ c.countLabel }}</div>
+                </div>
+              </sc-for>
+              <div onClick="{{ addCategory }}" style="padding:14px;border-radius:18px;border:1.5px dashed #E0D3C0;text-align:center;font:500 13.5px/1 'Zen Maru Gothic',sans-serif;color:#A2957F;cursor:pointer;user-select:none" style-hover="border-color:#C9B79E;color:#7F7364;background:#fff">{{ L.addCat }}</div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </x-import>
+
+    <div style="width:352px;display:flex;flex-direction:column;gap:20px;padding-top:8px">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;gap:8px;padding:0 4px">
+          <div style="font:700 14px/1.4 'Zen Maru Gothic',sans-serif;color:#413830">ホーム画面ウィジェット</div>
+          <div style="font:500 10.5px/1 'Quicksand',sans-serif;letter-spacing:.1em;color:#C0B4A5">V1.1 · WIDGETKIT</div>
+        </div>
+        <div style="border-radius:30px;padding:22px;background:linear-gradient(150deg,#EADFD1,#DCCFC0 55%,#CFC2B6);box-shadow:0 12px 30px rgba(120,100,80,.16);display:flex;flex-direction:column;gap:14px">
+          <div style="border-radius:24px;background:rgba(255,255,255,.92);padding:16px 17px;box-shadow:0 8px 20px rgba(90,74,58,.16);display:flex;flex-direction:column;gap:11px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:18px;height:18px;border-radius:6px;background:#8FB89E"></div>
+              <div style="flex:1;font:500 11.5px/1 'Zen Maru Gothic',sans-serif;color:#9A8D7E">{{ L.widgetTitle }}</div>
+              <div style="font:600 11px/1 'Quicksand',sans-serif;color:#C4713C">{{ widgetCount }}</div>
+            </div>
+            <sc-for list="{{ widgetItems }}" as="w" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:9px">
+                <div style="width:17px;height:17px;border-radius:999px;border:1.8px solid #DCCDB6;box-sizing:border-box"></div>
+                <div style="flex:1;font:400 13px/1 'Zen Maru Gothic',sans-serif;color:#4A4038">{{ w.name }}</div>
+                <div style="font:400 10.5px/1 'Zen Maru Gothic',sans-serif;color:#BDB1A2">{{ w.cat }}</div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ widgetEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:6px 0 4px;font:400 12px/1.6 'Zen Maru Gothic',sans-serif;color:#B0A496">{{ L.widgetEmpty }}</div>
+            </sc-if>
+          </div>
+          <div style="font:400 10.5px/1.7 'Zen Maru Gothic',sans-serif;color:rgba(70,58,46,.6);padding:0 4px">タップで該当アイテムを直接「買った」に。入力を生活動線に置く仕様書の狙いを、ウィジェット側で実装します。</div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border-radius:26px;padding:22px;box-shadow:0 10px 28px rgba(150,124,96,.09);display:flex;flex-direction:column;gap:12px">
+        <div style="font:700 15px/1.4 'Zen Maru Gothic',sans-serif;color:#413830">柔らかさの作りかた</div>
+        <sc-for list="{{ designNotes }}" as="n" hint-placeholder-count="5">
+          <div style="display:flex;gap:11px;align-items:flex-start">
+            <div style="flex:none;margin-top:6px;width:7px;height:7px;border-radius:999px;background:#DFCDB4"></div>
+            <div style="font:400 12.5px/1.85 'Zen Maru Gothic',sans-serif;color:#8C8073">{{ n }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="background:linear-gradient(160deg,#EDF3EC,#E6EFE6);border-radius:26px;padding:22px;display:flex;flex-direction:column;gap:10px">
+        <div style="font:700 15px/1.4 'Zen Maru Gothic',sans-serif;color:#4C6B52">試してみてください</div>
+        <sc-for list="{{ tryList }}" as="t" hint-placeholder-count="5">
+          <div style="font:400 12.5px/1.8 'Zen Maru Gothic',sans-serif;color:#5E7F62">{{ t }}</div>
+        </sc-for>
+      </div>
+
+      <div style="padding:0 6px;font:400 11.5px/1.9 'Zen Maru Gothic',sans-serif;color:#B5A996">残る検討: 購入履歴カレンダー（v1.1 以降）、通知トーン、App Store スクリーンショットのコピー。</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showLastPurchased&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;表示&quot;},&quot;freeItemLimit&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:10,&quot;min&quot;:3,&quot;max&quot;:40,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;課金&quot;}}">
+const STR = {
+  ja: {
+    bought: '買った', low: 'のこり1つ', inStock: '在庫あり', openOne: '開封 −1',
+    addItem: '＋ アイテムを追加', addSheetTitle: 'アイテムを追加',
+    namePlaceholder: 'なにをストックしますか？', category: 'カテゴリ', trackingMode: '管理方式',
+    binary: '二値', binaryHint: '在庫あり / のこり1つ', count: 'カウント', countHintShort: '開封するたび −1',
+    addConfirm: '追加する', addCat: '＋ カテゴリを追加',
+    tabBuy: '買うもの', tabStocks: 'ストック', tabSettings: '設定',
+    kickerBuy: 'Buy List', kickerStocks: 'Stocks', kickerSettings: 'Settings',
+    titleBuy: '買うもの', titleStocks: 'ストック', titleSettings: '設定',
+    proHead: 'カテゴリもアイテムも、無制限に。', proSub: '買い切り ¥800。家中のストックを気にせず登録できます。',
+    seePro: 'Pro を見る', restoreShort: 'リストア', restore: '購入をリストア', priceCta: '¥800 で買い切り',
+    manageCats: 'カテゴリの管理',
+    privacyNote: 'データは端末内にのみ保存されます。購入履歴は将来のカレンダー・消費周期予測のために記録中です。',
+    emptyTitle: '買うものはありません', emptyBody: 'ストックの最後の1つを開けたら、ストック一覧でチェックしてください。',
+    emptyCta: 'ストックを見る',
+    widgetTitle: '買うもの', widgetEmpty: 'いま買うものはありません',
+    perks: ['カテゴリ・アイテムを無制限に登録', '最終購入日をずっと残す', '買い切り・追加課金なし'],
+    settings: [['データのエクスポート', 'JSON'], ['データのインポート', ''], ['言語について', '端末の設定に追従'], ['プライバシーポリシー', '']],
+    cats: { '日用品': '日用品', '食品': '食品', 'ペット用品': 'ペット用品' },
+    countHint: n => 'つストック（閾値 ' + n + '）',
+    binaryAction: low => (low ? '買うものリストから除外' : '買うものリストに追加'),
+    last: (m, d) => m + '/' + d + ' に購入', noLast: 'まだ購入記録なし',
+    countLabel: n => n + '件', catCount: n => n + ' カテゴリ',
+    proStatus: pro => (pro ? '購入済み・ありがとうございます' : '未購入'),
+    quota: (pro, n) => (pro ? 'Pro：登録数は無制限です' : 'あと ' + n + ' 個まで無料で登録できます'),
+    limitItems: n => '無料枠のアイテム上限（' + n + '個）に達しました。Pro で上限がなくなります。',
+    limitCats: '無料枠のカテゴリ上限（5個）に達しました。',
+    proReason: n => '無料枠はカテゴリ5個・アイテム' + n + '個まで。Pro なら家中のストックを全部登録できます。',
+    newCat: n => '新しいカテゴリ ' + n, newItem: '新しいアイテム',
+  },
+  en: {
+    bought: 'Bought', low: 'Last one', inStock: 'In stock', openOne: 'Opened −1',
+    addItem: '+ Add item', addSheetTitle: 'Add an item',
+    namePlaceholder: 'What are you stocking?', category: 'Category', trackingMode: 'Tracking',
+    binary: 'Binary', binaryHint: 'In stock / Last one', count: 'Count', countHintShort: '−1 on each opening',
+    addConfirm: 'Add item', addCat: '+ Add category',
+    tabBuy: 'Buy List', tabStocks: 'Stocks', tabSettings: 'Settings',
+    kickerBuy: 'Buy List', kickerStocks: 'Stocks', kickerSettings: 'Settings',
+    titleBuy: 'Buy List', titleStocks: 'Stocks', titleSettings: 'Settings',
+    proHead: 'Unlimited items and categories.', proSub: 'One-time $5.99. Stock the whole house without counting.',
+    seePro: 'See Pro', restoreShort: 'Restore', restore: 'Restore purchase', priceCta: 'Buy once · $5.99',
+    manageCats: 'Manage categories',
+    privacyNote: 'Data stays on this device. Purchases are logged now to power the calendar and refill predictions later.',
+    emptyTitle: 'Nothing to buy', emptyBody: 'When you open the last one of a stock, check it off in Stocks.',
+    emptyCta: 'Go to Stocks',
+    widgetTitle: 'Buy List', widgetEmpty: 'Nothing to buy right now',
+    perks: ['Unlimited categories and items', 'Keep every purchase date', 'One-time purchase, no upsells'],
+    settings: [['Export data', 'JSON'], ['Import data', ''], ['About language', 'Follows device'], ['Privacy Policy', '']],
+    cats: { '日用品': 'Daily Goods', '食品': 'Food', 'ペット用品': 'Pet Supplies' },
+    countHint: n => 'in stock (threshold ' + n + ')',
+    binaryAction: low => (low ? 'Remove from Buy List' : 'Add to Buy List'),
+    last: (m, d) => 'Bought ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m - 1] + ' ' + d,
+    noLast: 'Never bought yet',
+    countLabel: n => n + ' items', catCount: n => n + ' categories',
+    proStatus: pro => (pro ? 'Purchased — thank you' : 'Free plan'),
+    quota: (pro, n) => (pro ? 'Pro: unlimited items' : n + ' more items on the free plan'),
+    limitItems: n => 'You hit the free limit of ' + n + ' items. Pro removes it.',
+    limitCats: 'You hit the free limit of 5 categories.',
+    proReason: n => 'Free covers 5 categories and ' + n + ' items. Pro lifts both.',
+    newCat: n => 'New category ' + n, newItem: 'New item',
+  },
+};
+
+class Component extends DCLogic {
+  state = {
+    lang: 'ja',
+    tab: 'buy',
+    sheet: null,
+    isPro: false,
+    paywallReason: null,
+    draft: { name: '', cat: '日用品', mode: 'binary' },
+    cats: ['日用品', '食品', 'ペット用品'],
+    items: [
+      { id: 1, name: '醤油', nameEn: 'Soy sauce', cat: '日用品', mode: 'binary', status: 'low', last: '2026-07-28' },
+      { id: 2, name: 'シャンプー', nameEn: 'Shampoo', cat: '日用品', mode: 'binary', status: 'in_stock', last: '2026-08-15' },
+      { id: 3, name: 'トイレットペーパー', nameEn: 'Toilet paper', cat: '日用品', mode: 'count', stockCount: 3, threshold: 1, status: 'in_stock', last: '2026-08-02' },
+      { id: 4, name: '食器用洗剤', nameEn: 'Dish soap', cat: '日用品', mode: 'binary', status: 'in_stock', last: '2026-06-19' },
+      { id: 5, name: '猫砂', nameEn: 'Cat litter', cat: 'ペット用品', mode: 'count', stockCount: 1, threshold: 1, status: 'low', last: '2026-08-20' },
+      { id: 6, name: 'ドライフード', nameEn: 'Dry food', cat: 'ペット用品', mode: 'binary', status: 'in_stock', last: '2026-08-24' },
+      { id: 7, name: 'お米', nameEn: 'Rice', cat: '食品', mode: 'count', stockCount: 2, threshold: 1, status: 'in_stock', last: '2026-08-10' },
+      { id: 8, name: 'オリーブオイル', nameEn: 'Olive oil', cat: '食品', mode: 'binary', status: 'in_stock', last: '2026-05-30' },
+      { id: 9, name: 'ハンドソープ', nameEn: 'Hand soap', cat: '日用品', mode: 'binary', status: 'in_stock', last: '2026-07-11' },
+    ],
+  };
+
+  patch(id, fn) {
+    this.setState(s => ({ items: s.items.map(i => (i.id === id ? Object.assign({}, i, fn(i)) : i)) }));
+  }
+
+  today() { return '2026-09-01'; }
+
+  renderVals() {
+    const s = this.state;
+    const en = s.lang === 'en';
+    const L = STR[s.lang];
+    const showLast = this.props.showLastPurchased !== false;
+    const limit = this.props.freeItemLimit ?? 10;
+    const catName = c => (L.cats[c] || c);
+    const itemName = it => (en && it.nameEn ? it.nameEn : it.name);
+    const lastOf = it => {
+      if (!showLast) return '';
+      if (!it.last) return L.noLast;
+      const p = it.last.split('-');
+      return L.last(Number(p[1]), Number(p[2]));
+    };
+
+    const decorate = it => ({
+      name: itemName(it), cat: catName(it.cat), stockCount: it.stockCount,
+      lastLabel: lastOf(it),
+      isLow: it.status === 'low',
+      inStock: it.status !== 'low',
+      isBinary: it.mode === 'binary',
+      isCount: it.mode === 'count',
+      countHint: L.countHint(it.threshold),
+      binaryAction: L.binaryAction(it.status === 'low'),
+      onToggleLow: () => this.patch(it.id, i => ({ status: i.status === 'low' ? 'in_stock' : 'low' })),
+      onOpenOne: () => this.patch(it.id, i => {
+        const n = Math.max(0, (i.stockCount || 0) - 1);
+        return { stockCount: n, status: n <= i.threshold ? 'low' : 'in_stock' };
+      }),
+      onBought: () => this.patch(it.id, i => ({
+        status: 'in_stock', last: this.today(),
+        stockCount: i.mode === 'count' ? Math.max(i.threshold + 1, (i.stockCount || 0) + 2) : i.stockCount,
+      })),
+    });
+
+    const lows = s.items.filter(i => i.status === 'low');
+    const groups = s.cats.map(c => {
+      const list = s.items.filter(i => i.cat === c);
+      return { name: catName(c), countLabel: L.countLabel(list.length), items: list.map(decorate) };
+    }).filter(g => g.items.length > 0);
+
+    const chip = active => ({
+      bg: active ? '#8FB89E' : '#fff',
+      fg: active ? '#fff' : '#8A7D6E',
+      border: active ? '#8FB89E' : '#EBE0D0',
+    });
+    const bin = chip(s.draft.mode === 'binary');
+    const cnt = chip(s.draft.mode === 'count');
+    const tabTone = t => (s.tab === t
+      ? { bg: 'rgba(143,184,158,.16)', color: '#5E7F62' }
+      : { bg: 'transparent', color: '#BDB1A2' });
+    const tb = tabTone('buy'), ts = tabTone('stocks'), tg = tabTone('settings');
+
+    const screen = {
+      buy: { kicker: L.kickerBuy, title: L.titleBuy, meta: L.countLabel(lows.length) },
+      stocks: { kicker: L.kickerStocks, title: L.titleStocks, meta: s.items.length + ' / ' + (s.isPro ? '∞' : limit) },
+      settings: { kicker: L.kickerSettings, title: L.titleSettings, meta: s.isPro ? 'Pro' : 'Free' },
+    }[s.tab];
+
+    return {
+      L,
+      setJa: () => this.setState({ lang: 'ja' }),
+      setEn: () => this.setState({ lang: 'en' }),
+      jaBg: en ? 'transparent' : '#8FB89E', jaFg: en ? '#A79C91' : '#fff',
+      enBg: en ? '#8FB89E' : 'transparent', enFg: en ? '#fff' : '#A79C91',
+
+      screenKicker: screen.kicker, screenTitle: screen.title, screenMeta: screen.meta,
+      isBuy: s.tab === 'buy', isStocks: s.tab === 'stocks', isSettings: s.tab === 'settings',
+      buyList: lows.map(decorate), buyEmpty: lows.length === 0,
+      groups,
+      goBuy: () => this.setState({ tab: 'buy' }),
+      goStocks: () => this.setState({ tab: 'stocks' }),
+      goSettings: () => this.setState({ tab: 'settings' }),
+      buyTabBg: tb.bg, buyTabColor: tb.color,
+      stocksTabBg: ts.bg, stocksTabColor: ts.color,
+      setTabBg: tg.bg, setTabColor: tg.color,
+
+      widgetItems: lows.slice(0, 3).map(i => ({ name: itemName(i), cat: catName(i.cat) })),
+      widgetEmpty: lows.length === 0,
+      widgetCount: lows.length ? L.countLabel(lows.length) : '',
+
+      proStatusLabel: L.proStatus(s.isPro),
+      catCountLabel: L.catCount(s.cats.length),
+      settingsRows: L.settings.map(r => ({ label: r[0], value: r[1] })),
+
+      showAdd: s.sheet === 'add', showPaywall: s.sheet === 'paywall', showCats: s.sheet === 'cats',
+      openAdd: () => (!s.isPro && s.items.length >= limit
+        ? this.setState({ sheet: 'paywall', paywallReason: L.limitItems(limit) })
+        : this.setState({ sheet: 'add' })),
+      openPaywall: () => this.setState({ sheet: 'paywall', paywallReason: L.proReason(limit) }),
+      openCats: () => this.setState({ sheet: 'cats' }),
+      closeSheet: () => this.setState({ sheet: null }),
+      stop: e => e.stopPropagation(),
+      paywallReason: s.paywallReason || L.proReason(limit),
+      proPerks: L.perks,
+      buyPro: () => this.setState({ isPro: true, sheet: null }),
+      restore: () => this.setState({ isPro: true, sheet: null }),
+
+      draftName: s.draft.name,
+      onDraftName: e => this.setState({ draft: Object.assign({}, s.draft, { name: e.target.value }) }),
+      catChips: s.cats.map(c => Object.assign({ name: catName(c), onPick: () => this.setState({ draft: Object.assign({}, s.draft, { cat: c }) }) }, chip(s.draft.cat === c))),
+      pickBinary: () => this.setState({ draft: Object.assign({}, s.draft, { mode: 'binary' }) }),
+      pickCount: () => this.setState({ draft: Object.assign({}, s.draft, { mode: 'count' }) }),
+      binaryBg: bin.bg, binaryFg: bin.fg, binaryBorder: bin.border,
+      countBg: cnt.bg, countFg: cnt.fg, countBorder: cnt.border,
+      quotaLabel: L.quota(s.isPro, Math.max(0, limit - s.items.length)),
+      submitAdd: () => {
+        if (!s.isPro && s.items.length >= limit) {
+          this.setState({ sheet: 'paywall', paywallReason: L.limitItems(limit) });
+          return;
+        }
+        const name = s.draft.name.trim() || L.newItem;
+        const item = {
+          id: Date.now(), name, nameEn: name, cat: s.draft.cat, mode: s.draft.mode,
+          status: 'in_stock', last: null,
+          stockCount: s.draft.mode === 'count' ? 2 : undefined,
+          threshold: 1,
+        };
+        this.setState({ items: s.items.concat([item]), sheet: null, draft: { name: '', cat: s.draft.cat, mode: 'binary' }, tab: 'stocks' });
+      },
+
+      catRows: s.cats.map(c => ({ name: catName(c), countLabel: L.countLabel(s.items.filter(i => i.cat === c).length) })),
+      addCategory: () => this.setState(st => (!st.isPro && st.cats.length >= 5
+        ? { sheet: 'paywall', paywallReason: L.limitCats }
+        : { cats: st.cats.concat([L.newCat(st.cats.length + 1)]) })),
+
+      designNotes: [
+        '生成りの紙色（#FAF5EE）＋ 白カード。純白の背景を避けて、画面全体のコントラストを一段落とす。',
+        '角丸 22–30px と、影は茶系の色付きで低コントラスト。輪郭線ではなく「浮き」で階層を作る。',
+        '状態色は 2 つだけ：セージ（在庫あり）とアプリコット（のこり1つ）。赤い警告色は使わない。',
+        '書体は Zen Maru Gothic（丸ゴシック）、数字だけ Quicksand。英語 UI でも同じ丸みを維持。',
+        '空状態は幾何形だけで組んだ「空のかご」。イラストは後で本番アセットに差し替え可能な構成。',
+      ],
+      tryList: [
+        '上のトグルで English に切替 → 文字幅が伸びるボタン（Opened −1 / Down to the last one）の折返し検証',
+        '「ストック」で「のこり1つになった」→ 買うものリストとウィジェットに同時に反映',
+        '買うものを全部「買った」→ 空状態のイラストが出ます',
+        'トイレットペーパーの「開封 −1」→ 閾値を切ると自動で low',
+        '＋アイテムを追加 → 上限を超えると Paywall',
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
