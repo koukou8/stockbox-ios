@@ -6,10 +6,10 @@ import SwiftUI
 enum LOEntitlement {
     /// RevenueCat の entitlement 識別子（`docs/spec/lastone-app.md`「課金」）。
     static let identifier = "pro"
-    /// App Store Connect の非消耗型プロダクト ID（TBD・実 SDK 導入時に確定する）。
-    static let productIdentifier = "jp.co.gimic.lastone.pro"
+    /// App Store Connect の非消耗型プロダクト ID。
+    static let productIdentifier = "com.kokiyoshida.stockbox.pro"
     /// スタブ実装が購入状態を保存する `UserDefaults` キー。
-    static let userDefaultsKey = "jp.co.gimic.lastone.entitlement.pro"
+    static let userDefaultsKey = "com.kokiyoshida.stockbox.entitlement.pro"
 }
 
 /// 購入 / リストアの結果。実 SDK でも同じ粒度で扱えるようにしてある。

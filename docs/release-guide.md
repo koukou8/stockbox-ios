@@ -7,6 +7,40 @@
 >
 > Apple 側の画面名・要件は年に数回変わります。本書と App Store Connect の表示が食い違う場合は **App Store Connect のヘルプを正** としてください。
 
+### 現在の進捗と保留項目（2026-09-15）
+
+#### Codexで完了した項目
+
+- StockBox用の1024×1024アプリアイコンを登録（シンプル版）
+- `PrivacyInfo.xcprivacy` を追加
+- `ITSAppUsesNonExemptEncryption = NO` を確認
+- GitHub Pages用の `docs/privacy/index.html` を作成し、`main` へ公開
+- プライバシーポリシーURLを `URLConstants.swift` に反映
+- Bundle IDを `com.kokiyoshida.stockbox` に設定
+- 課金Product IDを `com.kokiyoshida.stockbox.pro` に統一
+
+#### ユーザー作業として保留した項目
+
+次の項目はApple / GitHub / RevenueCatのアカウント画面での操作、本人確認、または実機が必要なため、Codexではスキップしています。完了後にこの手順書のチェックを更新してください。
+
+- **Phase 2-1**: XcodeでTeamを選択し、自動署名を有効化する
+- **Phase 2-5**: App Store ConnectのApp PrivacyへプライバシーポリシーURLを登録する
+- **Phase 3**: 実機接続・実機テストを行う
+- **Phase 4-1**: App Store ConnectでProduct ID `com.kokiyoshida.stockbox.pro` を作成する
+- **Phase 4-2**: RevenueCatプロジェクト、Entitlement、Offering、APIキーを作成する
+- **Phase 4-3**: RevenueCat SDKをXcodeへ追加し、APIキーを設定する
+- **Phase 4-5**: Sandboxテスターを作成し、実機で購入・復元を確認する
+- **Phase 5**: Archive、TestFlightアップロード、テスター配信を行う
+- **Phase 6**: スクリーンショット、掲載文、App Privacy、年齢制限、カテゴリ、審査情報をApp Store Connectへ登録する
+- **Phase 7**: App Reviewへ提出し、審査後に公開する
+- **Phase 7-6**: Shipatonへ提出する
+
+#### 現時点での注意
+
+- `termsOfUse` は実URL未確定のため、ダミーURLのままです。現在のUIから利用規約へ遷移する導線はありません。
+- RevenueCat SDKは、APIキー未提供のまま組み込むと購入処理を壊すため、アカウント設定後に実装します。
+- App Store公開前に、プライバシーポリシー本文の問い合わせ先とRevenueCat利用内容を最終確認してください。
+
 ---
 
 ## 0. 全体像
