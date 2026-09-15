@@ -49,17 +49,17 @@
 
 | 項目 | 状態 |
 |------|------|
-| 実装 | Sprint 1〜4 完了。ビルドはエラー 0 / warning 0 |
+| 実装 | Sprint 1〜4 完了。ReleaseビルドはSimulator環境未起動のため未確認 |
 | 検証 | シミュレータでの目視検証のみ。**実機テストは未実施** |
 | 未検証の操作 | カテゴリのドラッグ並べ替え / スワイプ削除 / エクスポートの共有シート / インポートのファイル選択（`docs/progress.md`「検証状況」） |
 | 既知の未達 | Dynamic Type 追従（固定サイズ。`accessibility1` で拡大を打ち切っている） |
 | 課金 | **未完了**。現在はスタブ。v1でRevenueCat SDKと非消耗型の買い切り課金を実装する |
 | 計測 | **スタブ**。`LoggingAnalyticsClient` がログを出すだけ |
-| 署名 | 無効化中（`CODE_SIGNING_ALLOWED = NO`）。配布ビルド不可 |
-| アイコン | 未作成（`AppIcon.appiconset` に画像なし） |
-| プライバシーマニフェスト | 未作成 |
-| 外部 URL | GitHub Pagesの公開URLへ差し替え予定。現在は `https://example.com/...` のダミー |
-| Apple Developer Program | 未加入 |
+| 署名 | XcodeでTeam選択・自動署名の有効化待ち。Bundle IDは確定済み |
+| アイコン | 1024×1024 PNGを登録済み（シンプル版） |
+| プライバシーマニフェスト | `PrivacyInfo.xcprivacy` を追加済み |
+| 外部 URL | プライバシーポリシーは `https://koukou8.github.io/stockbox-ios/privacy/` に設定済み。利用規約URLは未確定 |
+| Apple Developer Program | 加入済み。Xcodeの署名設定はユーザー作業待ち |
 
 ### 0-2. フェーズと流れ
 
