@@ -798,7 +798,7 @@ xcrun simctl spawn "iPhone 17" log stream --predicate 'processImagePath CONTAINS
   `settings.restore` / `sheet.quota`）。
 
 #### 10. 表示仕上げ
-- 英語 UI を全画面巡回し、「Remove from Buy List」「Add to Buy List」「Buy once · $5.99」
+- 英語 UI を全画面巡回し、「Remove from Buy List」「Add to Buy List」「Buy once · $3.99」
   「Free covers 5 categories and 30 items. Pro lifts both.」「Purchased — thank you」
   「One-time purchase, no upsells」などで折返し・`minimumScaleFactor` の崩れが無いことを
   スクリーンショットで確認した。
@@ -871,7 +871,7 @@ xcrun simctl spawn "iPhone 17" log stream --predicate 'processImagePath CONTAINS
   シートのドラッグ / detent / アクセシビリティを自前実装することになるため見送った。
 - **スタブの `restore()` は「購入が見つからない」分岐に到達しない**（必ず Pro になる）。
   実 SDK 導入時に `.noPurchaseFound` の実挙動を確認すること。UI とアラートは実装済み。
-- **価格は文言（`priceCta` / `proSub`）に直書きの仮値**（¥800 / $5.99）。実 SDK 導入後は
+- **価格は文言（`priceCta` / `proSub`）に直書きの仮値**（¥500 / $3.99）。実 SDK 導入後は
   StoreKit / RevenueCat から取得したローカライズ済み価格を差し込む必要がある（App Store 審査でも
   実価格の表示が求められる）。無料枠の数値（5 / 30）も仕様上 TBD。
 - **`LOURL.privacyPolicy` / `termsOfUse` はプレースホルダ URL**（`https://example.com/...`）。
@@ -976,21 +976,21 @@ xcrun simctl terminate booted $BID     # 次回起動から Free
 
 | # | 操作 | 期待結果 |
 |---|------|---------|
-| 1 | クリーンインストール → 起動 → Settings | 右上メタが **`Free`**。Pro カードが「PRO / 未購入 / カテゴリもアイテムも、無制限に。/ 買い切り ¥800。… / Pro を見る / リストア」。 |
-| 2 | Settings →「Pro を見る」 | **Paywall** が開く。金色の円に星（74pt）→「LastOne Pro」→ **`proReason`**（「無料枠はカテゴリ5個・アイテム30個まで。…」）→ 特典 3 行 → 「¥800 で買い切り」→「購入をリストア」。 |
+| 1 | クリーンインストール → 起動 → Settings | 右上メタが **`Free`**。Pro カードが「PRO / 未購入 / カテゴリもアイテムも、無制限に。/ 買い切り ¥500。… / Pro を見る / リストア」。 |
+| 2 | Settings →「Pro を見る」 | **Paywall** が開く。金色の円に星（74pt）→「LastOne Pro」→ **`proReason`**（「無料枠はカテゴリ5個・アイテム30個まで。…」）→ 特典 3 行 → 「¥500 で買い切り」→「購入をリストア」。 |
 | 3 | Paywall を下スワイプで閉じる | Settings に戻る。Pro にはならない。 |
 | 4 | Settings →「カテゴリの管理」→ カテゴリを 5 個になるまで追加 | 5 個目までは普通に追加できる（Settings の行が「5 カテゴリ」）。 |
 | 5 | 6 個目の「＋ カテゴリを追加」 | **Paywall が `limitCats`**（「無料枠のカテゴリ上限（5個）に達しました。」）で開き、**カテゴリは追加されていない**（閉じると 5 個のまま）。 |
 | 6 | Stocks でアイテムを 30 個になるまで追加 | 追加シートの残り枠ラベルが「あと N 個まで無料で登録できます」と減っていき、最後は「あと 0 個…」。右上メタが `30 / 30`。 |
 | 7 | 31 個目の「＋ アイテムを追加」 | **Paywall が `limitItems`**（「無料枠のアイテム上限（30個）に達しました。Pro で上限がなくなります。」）で開き、**追加シートは開かず、アイテムも増えない**。 |
-| 8 | その Paywall で「¥800 で買い切り」をタップ | 一瞬ローディング → **シートが閉じる**。Stocks の右上メタが **`30 / ∞`** に変わる。 |
+| 8 | その Paywall で「¥500 で買い切り」をタップ | 一瞬ローディング → **シートが閉じる**。Stocks の右上メタが **`30 / ∞`** に変わる。 |
 | 9 | 直後にもう一度「＋ アイテムを追加」 | **追加シートが開き**、残り枠ラベルが「**Pro：登録数は無制限です**」。31 個目を追加できる。 |
 | 10 | Settings を開く | 右上メタが **`Pro`**。Pro カードが「購入済み・ありがとうございます」、CTA が「**Pro 利用中**」（押せない）、「リストア」は押せる。 |
 | 11 | アプリを終了（`simctl terminate`）→ 再起動 | **Pro のまま**（メタ `Pro` / `N / ∞`）。 |
 | 12 | アンインストール → 再インストール → 起動 → Settings | `Free` に戻っている。 |
 | 13 | 「リストア」をタップ | 一瞬ローディング → 「**Pro を復元しました**」のアラート → OK で閉じると **Pro になっている**（スタブ実装の範囲で購入履歴を復元する挙動）。 |
 | 14 | Pro の状態でカテゴリを 6 個目・アイテムを 31 個目に追加 | **Paywall は出ず、そのまま追加できる**。 |
-| 15 | **英語**で 1〜14 を巡回 | `Free plan` / `See Pro` / `Restore` / `Restore purchase` / `Buy once · $5.99` / `Pro active` / `Purchased — thank you` / `You hit the free limit of 30 items. Pro removes it.` / `You hit the free limit of 5 categories.` / `Free covers 5 categories and 30 items. Pro lifts both.` / `0 more items on the free plan` / `Pro: unlimited items` が表示され、見切れ・折返し崩れが無い。 |
+| 15 | **英語**で 1〜14 を巡回 | `Free plan` / `See Pro` / `Restore` / `Restore purchase` / `Buy once · $3.99` / `Pro active` / `Purchased — thank you` / `You hit the free limit of 30 items. Pro removes it.` / `You hit the free limit of 5 categories.` / `Free covers 5 categories and 30 items. Pro lifts both.` / `0 more items on the free plan` / `Pro: unlimited items` が表示され、見切れ・折返し崩れが無い。 |
 | 16 | VoiceOver を ON にして Buy List / Stocks を操作 | 「買った」が「醤油 を買った」、二値トグルが「醤油 を買うものリストに追加」、「開封 −1」が「トイレットペーパー を 1 つ開封する」と読み上げられる。Paywall の星アイコンは読み上げられない。 |
 | 17 | Sprint 1〜3 の機能（コアループ / カテゴリ管理 / エクスポート / インポート）を一通り | 回帰していない。 |
 

@@ -1284,13 +1284,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Buy once · $5.99"
+            "value": "Buy once · $3.99"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "¥800 で買い切り"
+            "value": "¥500 で買い切り"
           }
         }
       }
@@ -1420,13 +1420,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "One-time $5.99. Stock the whole house without counting."
+            "value": "One-time $3.99. Stock the whole house without counting."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "買い切り ¥800。家中のストックを気にせず登録できます。"
+            "value": "買い切り ¥500。家中のストックを気にせず登録できます。"
           }
         }
       }

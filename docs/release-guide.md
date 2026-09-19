@@ -130,7 +130,7 @@ Shipaton 2026の参加条件により、無料版として先に公開する分�
 | 商品名 | StockBox Pro |
 | Product ID | `com.kokiyoshida.stockbox.pro` |
 | Entitlement | `pro` |
-| 価格 | 暫定 ¥800 / $5.99。App Store Connectの価格ティアで確定 |
+| 価格 | **¥500 / $3.99を採用**。App Store Connectの価格ティアで最終確認 |
 | 無料枠 | カテゴリ5個 / アイテム30個 |
 | 審査用アクセス | Shipaton用のプロモコード、または無料トライアルを用意 |
 
@@ -153,7 +153,7 @@ Shipaton 2026の参加条件により、無料版として先に公開する分�
 |------|-----------|------|
 | App Store 上のアプリ名 | 一意である必要がある | **StockBox: Home Inventory** |
 | サブタイトル（30 文字） | 例: "Tap once when it's the last one" / 「残り1つで、ワンタップ」 | 未定 |
-| 価格 | 仕様書の目安 ¥600〜1,000 / $4.99〜6.99 | UI 上は ¥800 / $5.99 |
+| 価格 | 仕様書の目安 ¥600〜1,000 / $4.99〜6.99 | **UI 上は ¥500 / $3.99** |
 | 無料枠 | カテゴリ 5 / アイテム 30 | `LastOne/Support/LOLimits.swift` |
 | プライバシーポリシーの掲載先 | 公開 URL が必須。GitHub Pagesを使用 | `https://<GitHubユーザー名>.github.io/<リポジトリ名>/privacy/` を予定 |
 | サポート URL | 必須。問い合わせフォームまたはメールアドレスを載せたページ | 未定 |

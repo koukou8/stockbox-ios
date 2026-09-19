@@ -444,6 +444,6 @@ xcrun simctl launch booted <APP_BUNDLE_ID> -AppleLanguages "(en)" -AppleLocale "
 ### 未確定事項（TBD・実装時は仮値で進める）
 
 - 無料枠の数値（カテゴリ 5 / アイテム 30 で実装。1 箇所の定数で変更可能にする）
-- Pro の価格（表示は design.md の `priceCta`「¥800 で買い切り」/「Buy once · $5.99」を仮の文言として使用）
+- Pro の価格（表示は design.md の `priceCta`「¥500 で買い切り」/「Buy once · $3.99」を使用）
 - プライバシーポリシー / 利用規約の URL（定数として 1 箇所にまとめ、プレースホルダ URL で実装）
 - アプリ正式名称（「LastOne」で実装）

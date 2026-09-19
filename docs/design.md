@@ -130,9 +130,9 @@
 | addCat | ＋ カテゴリを追加 | + Add category |
 | tabBuy / tabStocks / tabSettings | 買うもの / ストック / 設定 | Buy List / Stocks / Settings |
 | proHead | カテゴリもアイテムも、無制限に。 | Unlimited items and categories. |
-| proSub | 買い切り ¥800。家中のストックを気にせず登録できます。 | One-time $5.99. Stock the whole house without counting. |
+| proSub | 買い切り ¥500。家中のストックを気にせず登録できます。 | One-time $3.99. Stock the whole house without counting. |
 | seePro / restoreShort / restore | Pro を見る / リストア / 購入をリストア | See Pro / Restore / Restore purchase |
-| priceCta | ¥800 で買い切り | Buy once · $5.99 |
+| priceCta | ¥500 で買い切り | Buy once · $3.99 |
 | manageCats | カテゴリの管理 | Manage categories |
 | privacyNote | データは端末内にのみ保存されます。購入履歴は将来のカレンダー・消費周期予測のために記録中です。 | Data stays on this device. Purchases are logged now to power the calendar and refill predictions later. |
 | emptyTitle | 買うものはありません | Nothing to buy |

@@ -92,7 +92,7 @@
 | モデル | 買い切り（non-consumable）「LastOne Pro」 |
 | 無料枠 | カテゴリ 5 個・アイテム 30 個まで（数値は TBD） |
 | Pro | カテゴリ・アイテム無制限 |
-| 価格 | TBD（¥600〜1,000 / $4.99〜6.99 目安） |
+| 価格 | ¥500 / $3.99（買い切り。App Store Connectの価格ティアで最終確認） |
 | 実装 | RevenueCat（StoreKit 2）。entitlement `pro` で判定。Paywall は RevenueCat Paywalls で構築 |
 
 - Paywall 表示トリガー: 上限超過の追加操作時。Settings からも購入導線を常設
