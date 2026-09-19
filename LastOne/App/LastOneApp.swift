@@ -1,5 +1,6 @@
 import SwiftData
 import SwiftUI
+import RevenueCat
 
 @main
 struct LastOneApp: App {
@@ -11,12 +12,13 @@ struct LastOneApp: App {
     /// 実 SDK（PostHog）導入時はここのインスタンスを差し替えるだけでよい。
     private let analytics: any AnalyticsClient = LoggingAnalyticsClient()
 
-    /// 課金状態。MVP では `UserDefaults` スタブ。
-    /// 実 SDK（RevenueCat / StoreKit 2）導入時もここのインスタンスを差し替えるだけでよい
-    /// （差し替え手順は `EntitlementStore.swift` のコメントを参照）。
-    private let entitlements: any EntitlementStore = LocalEntitlementStore()
+    /// RevenueCatが返す購入状態をアプリ全体へ注入する。
+    private let entitlements: any EntitlementStore
 
     init() {
+        Purchases.configure(withAPIKey: LORevenueCatConfiguration.publicAPIKey)
+        entitlements = RevenueCatEntitlementStore()
+
         let schema = Schema([Category.self, Item.self, PurchaseLog.self])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         do {

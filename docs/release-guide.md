@@ -578,7 +578,7 @@ Shipaton応募とv1公開の必須フェーズです。このフェーズを完�
 
 ### 4-3. SDK を導入して `EntitlementStore` を差し替え
 
-1. Xcode → File → Add Package Dependencies → `https://github.com/RevenueCat/purchases-ios`
+1. Xcode → File → Add Package Dependencies → `https://github.com/RevenueCat/purchases-ios-spm.git`
    → Products は **RevenueCat** と **RevenueCatUI**（Paywall 用）を LastOne ターゲットに追加
 2. `EntitlementStore.swift` のコメントに書いてある手順どおり `RevenueCatEntitlementStore` を実装
    - `purchase()` → `Purchases.shared.offerings()` → `purchase(package:)` → `customerInfo.entitlements["pro"]?.isActive`
@@ -599,6 +599,14 @@ Shipaton応募とv1公開の必須フェーズです。このフェーズを完�
 
    API キーはソースに直書きせず、`Secrets.xcconfig`（`.gitignore` 済み）→ Info.plist 経由で読む構成を推奨
 5. Paywall は既存の `PaywallView` をそのまま使う（価格表示だけ `package.storeProduct.localizedPriceString` に置き換える）か、RevenueCat Paywalls（`RevenueCatUI.PaywallView`）に置き換える。**「購入をリストア」ボタンは必ず残す**（審査要件）
+
+**StockBoxの実装状況（2026-09-19）**
+
+- RevenueCat Swift Package（`RevenueCat` / `RevenueCatUI`）: 導入済み
+- `RevenueCatEntitlementStore`: 実装済み
+- `LastOneApp`のSDK初期化とEntitlement注入: 実装済み
+- Release向けビルド: 成功確認済み
+- Sandbox購入・復元: 未確認（Phase 4-4で実施）
 
 > `Package.resolved` が生成され、`docs/spec.md` の「Swift Package 依存 0 件」の前提がここで解除されます。`docs/progress.md` に記録してください。
 

@@ -28,13 +28,13 @@ enum EntitlementOutcome: Equatable, Sendable {
 
 /// 課金状態の抽象。**View は必ずこのプロトコル越しに参照し、SDK に直接触れない。**
 ///
-/// MVP では実 SDK を導入せず、`LocalEntitlementStore`（`UserDefaults` スタブ）だけを使う。
+/// 本番ではRevenueCat実装を使い、`LocalEntitlementStore` はPreviewやオフラインのUI確認に残す。
 ///
-/// ## 実 SDK（RevenueCat / StoreKit 2）への差し替え手順
+/// ## 実 SDK（RevenueCat / StoreKit 2）の構成
 ///
-/// 1. Swift Package で RevenueCat（`https://github.com/RevenueCat/purchases-ios`）を追加する。
-/// 2. `LastOneApp.init()` の先頭で `Purchases.configure(withAPIKey: "<公開 SDK キー>")` を呼ぶ。
-/// 3. 本ファイルの隣に `RevenueCatEntitlementStore` を新規作成する（既存ファイルは編集しない）:
+/// 1. Swift PackageでRevenueCatを追加する。
+/// 2. `LastOneApp.init()` の先頭で `Purchases.configure(withAPIKey:)` を呼ぶ。
+/// 3. `RevenueCatEntitlementStore` で購入・復元・Entitlementを管理する。
 ///
 ///    ```swift
 ///    @Observable
@@ -66,7 +66,7 @@ enum EntitlementOutcome: Equatable, Sendable {
 ///    }
 ///    ```
 ///
-/// 4. `LastOneApp` の `entitlements` プロパティのインスタンスを差し替える。
+/// 4. `LastOneApp` の `entitlements` プロパティへ実装を注入する。
 ///    Paywall / Settings / Stocks / 各シートは `\.entitlements` を読むだけなので **View 側の変更は不要**。
 /// 5. `Purchases.shared.delegate` で `customerInfo` の更新を受け取り、`isPro` に反映する
 ///    （家族共有・返金・別端末での購入に追従するため）。
