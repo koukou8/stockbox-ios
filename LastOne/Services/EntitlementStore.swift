@@ -84,10 +84,10 @@ protocol EntitlementStore: AnyObject, Observable {
 /// MVP 用のスタブ実装。`UserDefaults` に購入状態を保存するだけで、課金も通信も行わない。
 ///
 /// - `purchase()` は必ず成功し、Pro を有効にする。
-/// - `restore()` は「この Apple アカウントが Pro を購入済み」とみなして Pro を有効にする。
-///   実 SDK では `Purchases.restorePurchases()` の結果を見て、entitlement が無ければ
-///   `.noPurchaseFound` を返す（＝スタブでは到達しない分岐だが、UI 側は実装済み）。
-/// - 状態は `Library/Preferences/jp.co.gimic.lastone.plist` の
+/// - `restore()` は、スタブ内に購入済み状態がある場合だけ Pro を復元する。
+///   購入状態がなければ `.noPurchaseFound` を返し、無料版のままにする。
+///   実 SDK では `Purchases.restorePurchases()` の結果を見て同じ判断を行う。
+/// - 状態は `Library/Preferences/com.kokiyoshida.stockbox.plist` の
 ///   `LOEntitlement.userDefaultsKey` に入る。検証で Pro を解除したいときはこのキーを消す。
 @Observable
 final class LocalEntitlementStore: EntitlementStore {
@@ -113,8 +113,8 @@ final class LocalEntitlementStore: EntitlementStore {
 
     @MainActor
     func restore() async -> EntitlementOutcome {
+        guard isPro else { return .noPurchaseFound }
         await Self.simulateStoreRoundTrip()
-        applyPro(true)
         return .restored
     }
 
