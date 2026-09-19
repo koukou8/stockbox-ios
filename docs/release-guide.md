@@ -7,7 +7,7 @@
 >
 > Apple 側の画面名・要件は年に数回変わります。本書と App Store Connect の表示が食い違う場合は **App Store Connect のヘルプを正** としてください。
 
-### 現在の進捗と保留項目（2026-09-15）
+### 現在の進捗と保留項目（2026-09-19）
 
 #### Codexで完了した項目
 
@@ -18,27 +18,27 @@
 - プライバシーポリシーURLを `URLConstants.swift` に反映
 - Bundle IDを `com.kokiyoshida.stockbox` に設定
 - 課金Product IDを `com.kokiyoshida.stockbox.pro` に統一
+- App Store ConnectのIAPを¥500・全175地域・Ready to Submitで設定
+- RevenueCatのProduct / `pro` Entitlement / `default` Offeringを設定
+- RevenueCat SDKと購入・復元処理を実装し、Releaseビルドに成功
+- IAP審査用スクリーンショットを登録し、アプリバージョンにもスクリーンショットを1枚登録
 
 #### ユーザー作業として保留した項目
 
 次の項目はApple / GitHub / RevenueCatのアカウント画面での操作、本人確認、または実機が必要なため、Codexではスキップしています。完了後にこの手順書のチェックを更新してください。
 
-- **Phase 2-1**: XcodeでTeamを選択し、自動署名を有効化する
-- **Phase 2-5**: App Store ConnectのApp PrivacyへプライバシーポリシーURLを登録する
-- **Phase 3**: 実機接続・実機テストを行う
-- **Phase 4-1**: App Store ConnectでProduct ID `com.kokiyoshida.stockbox.pro` を作成する
-- **Phase 4-2**: RevenueCatプロジェクト、Entitlement、Offering、APIキーを作成する
-- **Phase 4-3**: RevenueCat SDKをXcodeへ追加し、APIキーを設定する
+- **Phase 2-5**: App Store ConnectのApp Privacyを申告し、プライバシーポリシーURLを登録する
+- **Phase 3**: RevenueCat SDK組み込み後の実機テストを再実施する
 - **Phase 4-5**: Sandboxテスターを作成し、実機で購入・復元を確認する
-- **Phase 5**: Archive、TestFlightアップロード、テスター配信を行う
-- **Phase 6**: スクリーンショット、掲載文、App Privacy、年齢制限、カテゴリ、審査情報をApp Store Connectへ登録する
+- **Phase 5**: RevenueCat SDK組み込み版をArchiveし、TestFlightへアップロードする
+- **Phase 6**: 残りのスクリーンショット、掲載文、App Privacy、年齢制限、カテゴリ、審査情報を登録する
 - **Phase 7**: App Reviewへ提出し、審査後に公開する
 - **Phase 7-6**: Shipatonへ提出する
 
 #### 現時点での注意
 
 - `termsOfUse` は実URL未確定のため、ダミーURLのままです。現在のUIから利用規約へ遷移する導線はありません。v1の開発・テスト中は対応不要ですが、**App Review提出前または最終アーカイブ作成前に定数を削除**してください。v1ではApple標準EULAを使用し、独自の利用規約ページは作成しない方針です。
-- RevenueCat SDKは、APIキー未提供のまま組み込むと購入処理を壊すため、アカウント設定後に実装します。
+- RevenueCatのApp Store Connect API keyは未設定ですが、Productは手動登録済みです。価格自動同期が不要なため、審査提出のブロッカーではありません。
 - App Store公開前に、プライバシーポリシー本文の問い合わせ先とRevenueCat利用内容を最終確認してください。
 
 #### Shipaton提出に向けた日程目安（2026-09-15時点）
@@ -65,13 +65,13 @@ Appleの審査が9月22日までに完了する保証はないため、この日
 
 | 項目 | 状態 |
 |------|------|
-| 実装 | Sprint 1〜4 完了。ReleaseビルドはSimulator環境未起動のため未確認 |
+| 実装 | Sprint 1〜4 完了。RevenueCat SDK・購入・復元処理を追加済み |
 | 検証 | シミュレータでの目視検証のみ。**実機テストは未実施** |
 | 未検証の操作 | カテゴリのドラッグ並べ替え / スワイプ削除 / エクスポートの共有シート / インポートのファイル選択（`docs/progress.md`「検証状況」） |
 | 既知の未達 | Dynamic Type 追従（固定サイズ。`accessibility1` で拡大を打ち切っている） |
-| 課金 | **未完了**。現在はスタブ。v1でRevenueCat SDKと非消耗型の買い切り課金を実装する |
+| 課金 | RevenueCatの非消耗型買い切り課金を実装済み。Sandbox購入・復元は未確認 |
 | 計測 | **スタブ**。`LoggingAnalyticsClient` がログを出すだけ |
-| 署名 | XcodeでTeam選択・自動署名の有効化待ち。Bundle IDは確定済み |
+| 署名 | Team選択・自動署名を設定済み。実機での最終再確認が必要 |
 | アイコン | 1024×1024 PNGを登録済み（シンプル版） |
 | プライバシーマニフェスト | `PrivacyInfo.xcprivacy` を追加済み |
 | 外部 URL | プライバシーポリシーは `https://koukou8.github.io/stockbox-ios/privacy/` に設定済み。利用規約URLは未確定 |
