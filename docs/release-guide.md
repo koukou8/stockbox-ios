@@ -27,17 +27,26 @@
 
 次の項目はApple / GitHub / RevenueCatのアカウント画面での操作、本人確認、または実機が必要なため、Codexではスキップしています。完了後にこの手順書のチェックを更新してください。
 
-- **Phase 2-5**: App Store ConnectのApp Privacyを申告し、プライバシーポリシーURLを登録する
-- **Phase 3**: RevenueCat SDK組み込み後の実機テストを再実施する
-- **Phase 4-5**: Sandboxテスターを作成し、実機で購入・復元を確認する
-- **Phase 5**: RevenueCat SDK組み込み版をArchiveし、TestFlightへアップロードする
-- **Phase 6**: 残りのスクリーンショット、掲載文、App Privacy、年齢制限、カテゴリ、審査情報を登録する
-- **Phase 7**: App Reviewへ提出し、審査後に公開する
-- **Phase 7-6**: Shipatonへ提出する
+- ***Phase 2-5: App Store ConnectのApp Privacyを申告し、プライバシーポリシーURLを登録する***
+- ***Phase 3: RevenueCat SDK組み込み後の実機テストを再実施する***
+- ***Phase 4-5: Sandboxテスターを作成し、実機で購入・復元を確認する***
+- ***Phase 5: RevenueCat SDK組み込み版をArchiveし、TestFlightへアップロードする***
+- ***Phase 6: 残りのスクリーンショット、掲載文、App Privacy、年齢制限、カテゴリ、審査情報を登録する***
+- ***Phase 7: App Reviewへ提出し、審査後に公開する***
+- ***Phase 7-6: Shipatonへ提出する***
+
+#### 審査提出までの残作業（優先順）
+
+1. ***App Privacyを申告し、プライバシーポリシーURLをApp Store Connectへ登録する（現在の提出ブロッカー）***
+2. ***RevenueCat SDK組み込み版をReleaseでArchiveし、TestFlightへアップロードしてビルドを選択する***
+3. ***Sandboxで購入・復元を実機確認する***
+4. ***スクリーンショット、説明文、年齢制限、カテゴリ、審査情報を完成させる***
+5. ***最終アーカイブ前にダミーの`termsOfUse`定数を削除する（v1はApple標準EULAを使用）***
+6. ***最終チェック後、Add for ReviewからApp Reviewへ提出する***
 
 #### 現時点での注意
 
-- `termsOfUse` は実URL未確定のため、ダミーURLのままです。現在のUIから利用規約へ遷移する導線はありません。v1の開発・テスト中は対応不要ですが、**App Review提出前または最終アーカイブ作成前に定数を削除**してください。v1ではApple標準EULAを使用し、独自の利用規約ページは作成しない方針です。
+- ***`termsOfUse` は実URL未確定のため、ダミーURLのままです。現在のUIから利用規約へ遷移する導線はありません。v1の開発・テスト中は対応不要ですが、App Review提出前または最終アーカイブ作成前に定数を削除してください。v1ではApple標準EULAを使用し、独自の利用規約ページは作成しない方針です。***
 - RevenueCatのApp Store Connect API keyは未設定ですが、Productは手動登録済みです。価格自動同期が不要なため、審査提出のブロッカーではありません。
 - App Store公開前に、プライバシーポリシー本文の問い合わせ先とRevenueCat利用内容を最終確認してください。
 
@@ -626,7 +635,7 @@ Shipaton応募とv1公開の必須フェーズです。このフェーズを完�
 3. シミュレータで購入フローを通す（課金は発生しない）
 4. Debug → StoreKit → Manage Transactions で購入を取り消して再テスト
 
-### 4-5. Sandbox テスターで実機テスト
+### 4-5. ***Sandbox テスターで実機テスト（未完了）***
 
 1. App Store Connect → Users and Access → **Sandbox** → Test Accounts → 「+」でテスト用 Apple Account を作成（実在しないメールでよいが、以後変更不可）
 2. iPhone の **設定 → App Store → Sandbox アカウント** にサインイン（この項目は一度でも開発ビルドで購入を試みると現れる）
@@ -646,7 +655,7 @@ Shipaton応募とv1公開の必須フェーズです。このフェーズを完�
 
 ---
 
-## Phase 5. TestFlight
+## Phase 5. ***TestFlight（未完了）***
 
 ### 5-1. アーカイブを作る
 
@@ -786,7 +795,7 @@ xcrun simctl io "$DEV" screenshot build/shots/store-01-buylist.png
 - キーワードはカンマ区切り、スペース不要。アプリ名・カテゴリ名と重複させない
 - 説明文の 1〜2 行目が検索結果で見えるので、そこに「残り1つになったらワンタップ」の価値を置く
 
-### 6-3. App Privacy（プライバシーラベル）
+### 6-3. ***App Privacy（プライバシーラベル・未完了）***
 
 App Information → App Privacy → Get Started。
 
@@ -837,17 +846,17 @@ App Information → Age Rating → 質問票に回答。このアプリは該当
 
 ### Phase 6 完了チェック
 
-- [ ] 6.9 インチのスクショが en / ja に 3 枚以上
-- [ ] Name / Subtitle / Description / Keywords / Support URL が en / ja 両方
-- [ ] Privacy Policy URL（App Information）
-- [ ] App Privacy の申告
-- [ ] Age Rating
-- [ ] Category / Price / Availability
+- ***[ ] 6.9 インチのスクショが en / ja に 3 枚以上***
+- ***[ ] Name / Subtitle / Description / Keywords / Support URL が en / ja 両方***
+- ***[ ] Privacy Policy URL（App Information）***
+- ***[ ] App Privacy の申告***
+- ***[ ] Age Rating***
+- ***[ ] Category / Price / Availability***
 - [ ] In-App Purchase がバージョンに紐付き「Ready to Submit」
 - [ ] RevenueCatのProduct / Entitlement / Offeringが本番設定済み
-- [ ] Shipaton提出用のプロモコードまたは無料トライアルが利用可能
-- [ ] App Review Information の連絡先とメモ
-- [ ] Build が選択されている（TestFlight で Processing 完了したもの）
+- ***[ ] Shipaton提出用のプロモコードまたは無料トライアルが利用可能***
+- ***[ ] App Review Information の連絡先とメモ***
+- ***[ ] Build が選択されている（TestFlight で Processing 完了したもの）***
 
 ---
 
@@ -855,12 +864,12 @@ App Information → Age Rating → 質問票に回答。このアプリは該当
 
 ### 7-1. 提出前の最終チェック
 
-- [ ] 提出するビルドで Phase 3-5 のチェックリスト A〜Eが通っている
-- [ ] Settings のプライバシーポリシー行が実 URL を開く
-- [ ] Sandbox で購入・リストアが通る
-- [ ] `docs/progress.md` の「検証状況」を実機テストの結果で更新した
-- [ ] `MARKETING_VERSION` が App Store Connect のバージョン（1.0）と一致
-- [ ] git でリリースコミットにタグを打った（例: `v1.0-build1`）
+- ***[ ] 提出するビルドで Phase 3-5 のチェックリスト A〜Eが通っている***
+- ***[ ] Settings のプライバシーポリシー行が実 URL を開く***
+- ***[ ] Sandbox で購入・リストアが通る***
+- ***[ ] `docs/progress.md` の「検証状況」を実機テストの結果で更新した***
+- ***[ ] `MARKETING_VERSION` が App Store Connect のバージョン（1.0）と一致***
+- ***[ ] git でリリースコミットにタグを打った（例: `v1.0-build1`）***
 
 ### 7-2. 提出
 
