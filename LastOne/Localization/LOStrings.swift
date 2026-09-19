@@ -235,7 +235,7 @@ enum L {
 
     // MARK: - Paywall
 
-    /// Paywall の見出し（プロダクト名なので両言語とも "LastOne Pro"）。
+    /// Paywall の見出し（プロダクト名なので両言語とも "StockBox Pro"）。
     static let paywallTitle: LocalizedStringKey = "paywallTitle"
 
     /// Pro カードの CTA を購入済み表示に切り替えるときのラベル。

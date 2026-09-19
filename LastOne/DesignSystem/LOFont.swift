@@ -67,7 +67,7 @@ enum LOFont {
     /// Pro カードの見出し（19 / bold）。
     static let proHead = Font.system(size: 19, weight: .bold, design: .rounded)
 
-    /// Paywall のタイトル「LastOne Pro」（22 / bold）。
+    /// Paywall のタイトル「StockBox Pro」（22 / bold）。
     static let paywallTitle = Font.system(size: 22, weight: .bold, design: .rounded)
     /// Paywall の表示理由テキスト（13 / regular・行間広め）。
     static let paywallReason = Font.system(size: 13, weight: .regular, design: .rounded)

@@ -18,7 +18,7 @@ struct PaywallPresentation: Identifiable {
 
 /// Paywall シート（`docs/design.md` §2「Paywall シート」）。
 ///
-/// グラデ背景 → 金色の円に星アイコン（74pt）→「LastOne Pro」→ 表示理由テキスト
+/// グラデ背景 → 金色の円に星アイコン（74pt）→「StockBox Pro」→ 表示理由テキスト
 /// → 特典 3 行（チェックアイコン）→ 価格 CTA → 「購入をリストア」。
 ///
 /// - 購入 / リストアは `EntitlementStore` プロトコル越しにのみ行う（View は SDK に触れない）。

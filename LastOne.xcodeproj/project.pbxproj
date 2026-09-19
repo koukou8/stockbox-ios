@@ -206,7 +206,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastOne/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LastOne;
+				INFOPLIST_KEY_CFBundleDisplayName = StockBox;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -238,7 +238,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastOne/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = LastOne;
+				INFOPLIST_KEY_CFBundleDisplayName = StockBox;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

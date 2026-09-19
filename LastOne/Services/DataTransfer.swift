@@ -59,7 +59,7 @@ struct LOBackupPurchaseLog: Codable {
 // MARK: - エラー
 
 enum DataTransferError: LocalizedError {
-    /// LastOne のバックアップとして解釈できない。
+    /// StockBox のバックアップとして解釈できない。
     case unsupportedFormat
     /// このアプリより新しいスキーマ。
     case unsupportedVersion(Int)
@@ -68,7 +68,7 @@ enum DataTransferError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .unsupportedFormat: return "The file is not a LastOne backup."
+        case .unsupportedFormat: return "The file is not a StockBox backup."
         case .unsupportedVersion(let version): return "Unsupported backup version \(version)."
         case .io(let error): return error.localizedDescription
         }
@@ -182,7 +182,7 @@ enum DataTransferService {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = .current
         formatter.dateFormat = "yyyy-MM-dd-HHmm"
-        return "LastOne-Backup-\(formatter.string(from: now))"
+        return "StockBox-Backup-\(formatter.string(from: now))"
     }
 
     // MARK: - インポート

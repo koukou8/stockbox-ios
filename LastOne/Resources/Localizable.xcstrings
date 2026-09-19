@@ -774,13 +774,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This file couldn’t be read as a LastOne backup. Choose a JSON file exported from LastOne."
+            "value": "This file couldn’t be read as a StockBox backup. Choose a JSON file exported from StockBox."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "このファイルは LastOne のバックアップとして読み込めませんでした。LastOne でエクスポートした JSON ファイルを選んでください。"
+            "value": "このファイルは StockBox のバックアップとして読み込めませんでした。StockBox でエクスポートした JSON ファイルを選んでください。"
           }
         }
       }
@@ -876,13 +876,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "LastOne follows your device language. To use a different language just for this app, open iOS Settings > LastOne > Language."
+            "value": "StockBox follows your device language. To use a different language just for this app, open iOS Settings > StockBox > Language."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "表示言語は端末の設定に追従します。このアプリだけ別の言語にしたいときは、iOS の「設定 > LastOne > 言語」から変更してください。"
+            "value": "表示言語は端末の設定に追従します。このアプリだけ別の言語にしたいときは、iOS の「設定 > StockBox > 言語」から変更してください。"
           }
         }
       }
@@ -1165,13 +1165,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "LastOne Pro"
+            "value": "StockBox Pro"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "LastOne Pro"
+            "value": "StockBox Pro"
           }
         }
       }
@@ -1590,13 +1590,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "There is no LastOne Pro purchase on this Apple Account."
+            "value": "There is no StockBox Pro purchase on this Apple Account."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "この Apple アカウントに LastOne Pro の購入履歴がありません。"
+            "value": "この Apple アカウントに StockBox Pro の購入履歴がありません。"
           }
         }
       }
