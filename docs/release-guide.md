@@ -545,13 +545,22 @@ Shipaton応募とv1公開の必須フェーズです。このフェーズを完�
    | Type | **Non-Consumable**（買い切り） |
    | Reference Name | `StockBox Pro`（内部用） |
    | Product ID | `com.kokiyoshida.stockbox.pro`（**後から変更不可**） |
-   | Price | Phase 0 で決めた価格帯（Apple の価格ティアから選択。全地域の価格は自動換算） |
+   | Price | **¥500**（日本を基準地域として設定） |
    | Localization | en-US: "StockBox Pro" / "Unlimited categories and items"、ja: "StockBox Pro" / "カテゴリ・アイテム無制限" |
    | Review Screenshot | Paywall 画面のスクショ（審査用。必須） |
    | Review Notes | 「31 個目のアイテム追加時に Paywall が表示されます」 |
 
 3. ステータスが「Ready to Submit」になることを確認（有料 App 契約が Active でないとここで止まる）
 4. **最初の課金アイテムはアプリのバージョンと一緒に審査提出する**必要がある。Phase 6 でバージョンページの「In-App Purchases and Subscriptions」欄に追加する
+
+**StockBoxの設定状況（2026-09-19）**
+
+- Product ID / Non-Consumable / ローカライズ: 設定済み
+- 価格: ¥500（即時価格変更を登録済み）
+- 配信地域: 175地域を選択済み
+- Review Screenshot: `1284 × 2778 px` の画像を登録済み
+- Review Notes: 登録済み
+- ステータス: **Ready to Submit（審査準備完了）**。アプリバージョン1.0の審査対象へ追加済み
 
 ### 4-2. RevenueCat の設定
 
@@ -597,7 +606,7 @@ Shipaton応募とv1公開の必須フェーズです。このフェーズを完�
    Purchases.configure(withAPIKey: "appl_xxxxxxxx")
    ```
 
-   API キーはソースに直書きせず、`Secrets.xcconfig`（`.gitignore` 済み）→ Info.plist 経由で読む構成を推奨
+   Public API keyはアプリに含めても問題ないキーですが、Secret API keyは絶対に組み込まない
 5. Paywall は既存の `PaywallView` をそのまま使う（価格表示だけ `package.storeProduct.localizedPriceString` に置き換える）か、RevenueCat Paywalls（`RevenueCatUI.PaywallView`）に置き換える。**「購入をリストア」ボタンは必ず残す**（審査要件）
 
 **StockBoxの実装状況（2026-09-19）**
