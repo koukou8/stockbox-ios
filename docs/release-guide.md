@@ -560,9 +560,21 @@ Shipaton応募とv1公開の必須フェーズです。このフェーズを完�
    - App Store Connect → Users and Access → Integrations → **In-App Purchase** → キーを生成 → `.p8` をダウンロード
    - RevenueCat の App 設定にアップロード（StoreKit 2 での検証に必要）
 3. Products → App Store Connectで作成したProduct IDをインポート
+   - App Store Connect API key未設定の場合は、Products → Newから手動登録してもよい
+   - Identifier: `com.kokiyoshida.stockbox.pro` / Product type: **Non-consumable**
 4. Entitlements → 識別子 **`pro`** を作成（`EntitlementStore.swift` の `LOEntitlement.identifier` と一致させる）→ 上の Product を紐付け
-5. Offerings → `default` を作成 → Package（Lifetime）に Product を紐付け
-6. API Keys → iOS の Public API key（`appl_...`）を控える
+5. Offerings → `default` を作成（既存の`default`があれば再利用）→ Package（Lifetime）にProductを紐付け
+6. API Keys → iOS の Public API key（`appl_...`）を控える。Secret API keyはアプリに組み込まない
+
+**StockBoxの設定状況（2026-09-19）**
+
+- App Store用アプリ設定: 完了（Bundle ID `com.kokiyoshida.stockbox`）
+- In-App Purchase Key: `Valid credentials` を確認済み
+- Product: `com.kokiyoshida.stockbox.pro` を登録済み
+- Entitlement: `pro` を作成し、上記Productを紐付け済み
+- Offering: `default` のLifetime packageに上記Productを紐付け済み
+- iOS Public API key: 確認済み（リポジトリへは未コミット）
+- App Store Connect API key: 未設定のため、Productは手動登録。価格の自動同期は未設定
 
 ### 4-3. SDK を導入して `EntitlementStore` を差し替え
 
